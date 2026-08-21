@@ -1,6 +1,0 @@
-- `[x]` Configure Tailwind and Fonts (`tailwind.config.js`, `app/layout.jsx`)
-- `[x]` Redesign Landing Page (`app/page.jsx`)
-- `[x]` Redesign Auth Pages (Patient & Doctor Signin/Signup)
-- `[x]` Redesign Patient Portal (`app/patient/doctors/page.jsx`, `app/consult/[doctorId]/page.jsx`)
-- `[x]` Redesign Doctor Portal (`app/doctor/profile/page.jsx`, `app/doctor/prescriptions/page.jsx`)
-- `[x]` Redesign Components (`DoctorCard`, `PrescriptionForm`, `Stepper`)
