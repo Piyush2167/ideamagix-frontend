@@ -10,7 +10,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [app-client] (ecmascript)");
 ;
 const api = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].create({
-    baseURL: `${__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].env.NEXT_PUBLIC_API_BASE_URL}/api`
+    baseURL: `${("TURBOPACK compile-time value", "http://localhost:5000")}/api`
 });
 // Let's add token interceptor
 api.interceptors.request.use((config)=>{
@@ -73,11 +73,7 @@ const DoctorAuthProvider = ({ children })=>{
         localStorage.setItem('doctorInfo', JSON.stringify(res.data));
     };
     const register = async (formData)=>{
-        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$api$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post('/doctor/auth/register', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
+        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$api$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post('/doctor/auth/register', formData);
         setDoctor(res.data);
         localStorage.setItem('doctorInfo', JSON.stringify(res.data));
     };
@@ -95,7 +91,7 @@ const DoctorAuthProvider = ({ children })=>{
         children: children
     }, void 0, false, {
         fileName: "[project]/context/DoctorAuthContext.jsx",
-        lineNumber: 35,
+        lineNumber: 33,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
@@ -143,11 +139,7 @@ const PatientAuthProvider = ({ children })=>{
         localStorage.setItem('patientInfo', JSON.stringify(res.data));
     };
     const register = async (formData)=>{
-        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$api$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post('/patient/auth/register', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
+        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$api$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post('/patient/auth/register', formData);
         setPatient(res.data);
         localStorage.setItem('patientInfo', JSON.stringify(res.data));
     };
@@ -165,7 +157,7 @@ const PatientAuthProvider = ({ children })=>{
         children: children
     }, void 0, false, {
         fileName: "[project]/context/PatientAuthContext.jsx",
-        lineNumber: 35,
+        lineNumber: 33,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };

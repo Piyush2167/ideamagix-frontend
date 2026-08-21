@@ -1,73 +1,101 @@
 "use client";
 import { useState, useEffect } from 'react';
-import api from '../../api/axios';
+import api from '../../../api/axios';
 import { useRouter } from 'next/navigation';
+import DoctorTopbar from '../../../components/doctor/DoctorTopbar';
+import Container from '../../../components/ui/Container';
+import Card from '../../../components/ui/Card';
+import Badge from '../../../components/ui/Badge';
+import Button from '../../../components/ui/Button';
+import Avatar from '../../../components/ui/Avatar';
+import Skeleton from '../../../components/ui/Skeleton';
+import EmptyState from '../../../components/ui/EmptyState';
+import { FileText, ArrowClockwise } from '@phosphor-icons/react/dist/ssr';
 
-export default function PrescriptionPage() {
+export default function PrescriptionsPage() {
   const [consultations, setConsultations] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const router = useRouter();
 
+  const fetchConsultations = async () => {
+    setLoading(true);
+    setError(false);
+    try {
+      const res = await api.get('/consultations/doctor');
+      setConsultations(res.data);
+    } catch (err) {
+      console.error('Failed to fetch consultations', err);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchConsultations = async () => {
-      try {
-        const res = await api.get('/consultations/doctor');
-        setConsultations(res.data);
-      } catch (error) {
-        console.error('Failed to fetch consultations', error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchConsultations();
   }, []);
 
   return (
-    <div className="flex-1 bg-slate-50 p-6 md:p-12">
-      <div className="max-w-5xl mx-auto">
-        <div className="flex items-center justify-between mb-8 border-b border-slate-200 pb-6">
-          <div>
-            <h2 className="text-3xl font-trench font-bold text-slate-900">Patient Consultations</h2>
-            <p className="text-slate-500 mt-1">Pending and completed patient consultations.</p>
-          </div>
-          <button onClick={() => router.push('/doctor/profile')} className="px-4 py-2 text-slate-600 hover:text-slate-900 bg-white border border-slate-200 rounded-lg transition-colors text-sm font-medium shadow-sm">
-            &larr; Back to Dashboard
-          </button>
+    <div className="flex min-h-[100dvh] flex-col bg-canvas">
+      <DoctorTopbar />
+      <Container as="main" className="flex-1 py-10">
+        <div className="mb-8">
+          <p className="text-xs font-semibold uppercase tracking-wider text-clinic-500">Prescriptions</p>
+          <h1 className="mt-1 font-trench text-[clamp(1.75rem,3.5vw,2.25rem)] font-bold tracking-tight text-ink">Patient consultations</h1>
+          <p className="mt-1 text-sm text-ink/45">Select a consultation to write or edit a prescription.</p>
         </div>
 
         {loading ? (
-          <div className="text-slate-400 animate-pulse text-center py-20 font-medium">Loading consultations...</div>
-        ) : consultations.length === 0 ? (
-          <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-500 shadow-sm">
-            <p className="text-lg">No consultations right now.</p>
-            <p className="text-sm mt-1 text-slate-400">When patients book you, they will appear here.</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {consultations.map(consult => (
-              <div key={consult._id} className="bg-white border border-slate-200 p-6 rounded-xl shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4 transition-all hover:shadow-md">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-1">
-                    <h3 className="text-lg font-bold text-slate-900">{consult.patient?.name}</h3>
-                    <span className="text-slate-400 text-sm">• {consult.patient?.age} yrs</span>
-                    <span className={`px-2.5 py-0.5 rounded-md text-xs font-semibold ${consult.status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
-                      {consult.status.toUpperCase()}
-                    </span>
-                  </div>
-                  <p className="text-slate-600 text-sm line-clamp-2"><span className="font-semibold text-slate-700">Symptoms:</span> {consult.currentIllnessHistory}</p>
+          <div className="space-y-3">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Card key={i} className="flex items-center gap-4 p-5">
+                <Skeleton className="h-11 w-11 rounded-full" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-1/3" />
+                  <Skeleton className="h-3.5 w-2/3" />
                 </div>
-                
-                <button 
-                  onClick={() => router.push(`/doctor/prescription/${consult._id}`)}
-                  className="w-full md:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-colors whitespace-nowrap text-sm"
+                <Skeleton className="h-9 w-32 rounded-lg" />
+              </Card>
+            ))}
+          </div>
+        ) : error ? (
+          <EmptyState
+            title="Something went wrong"
+            description="We couldn't load your consultations. Please try again."
+            action={<Button variant="secondary" onClick={fetchConsultations}><ArrowClockwise size={16} />Try Again</Button>}
+          />
+        ) : consultations.length === 0 ? (
+          <EmptyState
+            icon={<FileText size={32} weight="light" />}
+            title="No consultations yet"
+            description="When patients book you, they'll appear here ready for a prescription."
+          />
+        ) : (
+          <div className="space-y-3">
+            {consultations.map((consult) => (
+              <Card key={consult._id} className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center">
+                <Avatar src={consult.patient?.profilePicture ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/${consult.patient.profilePicture}` : null} name={consult.patient?.name} />
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="text-[15px] font-semibold text-ink">{consult.patient?.name}</h3>
+                    <span className="text-sm text-ink/40">{consult.patient?.age} yrs</span>
+                    <Badge tone={consult.status}>{consult.status}</Badge>
+                  </div>
+                  <p className="mt-1 truncate text-sm text-ink/50">{consult.currentIllnessHistory}</p>
+                </div>
+                <Button
+                  size="sm"
+                  className="w-full sm:w-auto"
+                  onClick={() => router.push(`/doctor/prescriptions/${consult._id}`)}
                 >
                   {consult.status === 'completed' ? 'Edit Prescription' : 'Write Prescription'}
-                </button>
-              </div>
+                </Button>
+              </Card>
             ))}
           </div>
         )}
-      </div>
+      </Container>
     </div>
   );
 }

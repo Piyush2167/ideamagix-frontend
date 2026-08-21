@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import api from '../api/axios';
+import DoctorTopbar from './doctor/DoctorTopbar';
 
 export default function PrescriptionForm() {
   const { id: consultationId } = useParams();
@@ -60,12 +61,21 @@ export default function PrescriptionForm() {
     }
   };
 
-  if (loading) return <div className="flex-1 bg-slate-50 flex items-center justify-center text-slate-500 font-medium">Loading Document...</div>;
-
   const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 
+  if (loading) {
+    return (
+      <div className="flex min-h-[100dvh] flex-col bg-canvas">
+        <DoctorTopbar />
+        <div className="flex flex-1 items-center justify-center text-sm font-medium text-ink/45">Loading document...</div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex-1 bg-slate-100 p-4 md:p-8 flex justify-center py-10">
+    <div className="flex min-h-[100dvh] flex-col bg-canvas">
+      <DoctorTopbar />
+      <div className="flex flex-1 justify-center p-4 py-10 md:p-8">
       <div className="w-full max-w-3xl">
         <div className="flex justify-between items-center mb-6 px-2">
           <h2 className="text-2xl font-bold text-slate-900">
@@ -178,6 +188,7 @@ export default function PrescriptionForm() {
             <p className="text-slate-900 font-serif italic text-2xl mt-2">{consultation?.doctor?.name}</p>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

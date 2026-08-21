@@ -1,4 +1,14 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/page": "app/page.js"
+  "/doctor/consultations/page": "app/doctor/consultations/page.js",
+  "/doctor/login/page": "app/doctor/login/page.js",
+  "/doctor/prescriptions/page": "app/doctor/prescriptions/page.js",
+  "/doctor/profile/page": "app/doctor/profile/page.js",
+  "/doctor/signup/page": "app/doctor/signup/page.js",
+  "/page": "app/page.js",
+  "/patient/consultations/page": "app/patient/consultations/page.js",
+  "/patient/doctors/[doctorId]/consult/page": "app/patient/doctors/[doctorId]/consult/page.js",
+  "/patient/doctors/page": "app/patient/doctors/page.js",
+  "/patient/login/page": "app/patient/login/page.js",
+  "/patient/prescriptions/page": "app/patient/prescriptions/page.js",
+  "/patient/signup/page": "app/patient/signup/page.js"
 }

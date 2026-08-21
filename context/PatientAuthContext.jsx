@@ -19,9 +19,7 @@ export const PatientAuthProvider = ({ children }) => {
   };
 
   const register = async (formData) => {
-    const res = await api.post('/patient/auth/register', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    });
+    const res = await api.post('/patient/auth/register', formData);
     setPatient(res.data);
     localStorage.setItem('patientInfo', JSON.stringify(res.data));
   };

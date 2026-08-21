@@ -19,9 +19,7 @@ export const DoctorAuthProvider = ({ children }) => {
   };
 
   const register = async (formData) => {
-    const res = await api.post('/doctor/auth/register', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    });
+    const res = await api.post('/doctor/auth/register', formData);
     setDoctor(res.data);
     localStorage.setItem('doctorInfo', JSON.stringify(res.data));
   };

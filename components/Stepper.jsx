@@ -1,29 +1,28 @@
+import { Check } from '@phosphor-icons/react/dist/ssr';
+
 export default function Stepper({ currentStep, steps }) {
   return (
-    <div className="flex items-center justify-between mb-4 w-full">
+    <div className="flex items-start">
       {steps.map((step, index) => {
-        const isActive = index + 1 === currentStep;
-        const isCompleted = index + 1 < currentStep;
-        
+        const num = index + 1;
+        const isActive = num === currentStep;
+        const isCompleted = num < currentStep;
+
         return (
-          <div key={index} className="flex flex-col items-center relative w-full">
-            <div 
-              className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm z-10 transition-colors shadow-sm
-                ${isActive ? 'bg-slate-900 text-white ring-4 ring-slate-100' : 
-                  isCompleted ? 'bg-blue-600 text-white' : 'bg-white text-slate-400 border border-slate-200'}`}
-            >
-              {isCompleted ? '✓' : index + 1}
+          <div key={step} className={`flex items-center ${index !== steps.length - 1 ? 'flex-1' : ''}`}>
+            <div className="flex flex-col items-center gap-2">
+              <div
+                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold transition-colors
+                  ${isActive ? 'bg-ink text-white' : isCompleted ? 'bg-clinic-500 text-white' : 'bg-canvas text-ink/35 border border-line'}`}
+              >
+                {isCompleted ? <Check size={14} weight="bold" /> : String(num).padStart(2, '0')}
+              </div>
+              <span className={`whitespace-nowrap text-xs font-medium ${isActive ? 'text-ink' : 'text-ink/40'}`}>
+                {step}
+              </span>
             </div>
-            <div className={`text-xs mt-3 font-semibold tracking-wide uppercase ${isActive ? 'text-slate-900' : isCompleted ? 'text-blue-600' : 'text-slate-400'}`}>
-              {step}
-            </div>
-            
-            {/* Connector Line */}
             {index !== steps.length - 1 && (
-              <div 
-                className={`absolute top-4 left-[50%] right-[-50%] h-[2px] -z-10 transition-colors
-                  ${isCompleted ? 'bg-blue-600' : 'bg-slate-200'}`}
-              />
+              <div className={`mx-3 mt-4 h-px flex-1 ${isCompleted ? 'bg-clinic-500' : 'bg-line'}`} />
             )}
           </div>
         );
